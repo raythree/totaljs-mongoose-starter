@@ -180,6 +180,7 @@ function listUsers() {
     .catch((err) => handleError(self, err))
 }
 ```
+The total is also provided in a header (exposed for CORS) as some clients were looking for it there.
 
 
 
