@@ -5,8 +5,7 @@ const log = require('simple-console-logger').getLogger('queryParams');
 //
 // range=[start, end]
 // filter={a: aVal, b: bVal} - keys can be quoted or unquoted, string values must be quoted
-// sort=[name, ASC] or sort=+name or sort=-name
-// ids=["1", "2", "3"] - Used for GET_MANY
+// sort=[name, ASC]
 //----------------------------------------------------------------------------------
 
 const defaultRange = [0, Number.MAX_SAFE_INTEGER];
