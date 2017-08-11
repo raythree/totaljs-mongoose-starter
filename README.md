@@ -138,6 +138,17 @@ The Mongoose schemas are exported here. These were deliberately placed in their 
 #### Models
 All models (used by controllers) are places here. I exposed the User model directly (for example, to be used by schema testing), but the actual models are not needed by controllers. Only methods to act on models are needed, like create, update, save, and delete. 
 
+All Mongoose models are associated with a database connection. If you use ```mongoose.connect```, you are creating a default connection, and then ```mongoose.model``` will create models on the default connection.
+
+In order to support multiple databases, you need to use ```mongoose.createConnection```, which is what  ```db.js``` in the models directory does. It then exports that connection for model creation. Should another database connection be required, it would just create it and export it, and Models can use the exported connections: 
+
+```
+// in user model
+
+const db = require(...) // require whatever database connection is needed
+const User = db.model('User', userSchema);  
+```
+
 #### static
 A single html file is placed here and served as index.html. You could, for example, have your webpack build replace this with a bundled SPA, which is what I usually do with React apps. The starter app is using Total.js as a pure REST/JSON server, but it also has a rich view framework for server side rendering.
 

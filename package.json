@@ -13,7 +13,7 @@
     "jsonwebtoken": "^7.4.2",
     "mongoose": "^4.11.4",
     "mongoose-unique-validator": "^1.0.5",
-    "simple-console-logger": "^2.0.0",
+    "simple-console-logger": "^2.0.2",
     "total.js": "^2.7.0"
   },
   "devDependencies": {}
