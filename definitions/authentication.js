@@ -5,7 +5,7 @@
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
 
-const log = require('simple-console-logger').getLogger('authorize');
+const log = require('simple-console-logger').getLogger('authentication');
 
 let serverKey;
 
@@ -15,8 +15,8 @@ let serverKey;
 //--------------------------------------------------------------------------
 let keyFile = process.env.SECRET_KEY
 if (!keyFile) {
-  log.error('Exiting, SECRET_KEY environment variable must be set');
-  process.exit(-1);
+  log.warn('SECRET_KEY environment variable is NOT set, defaulting to ./secretkey.txt');
+  keyFile = './secretkey.txt';
 }
 
 try {  
@@ -43,6 +43,8 @@ function authorization(req, res, flags, callback) {
 
   verifyAuthHeader(authHeader)
     .then((userData) => {
+      // add user to the request
+      req.user = userData;
       callback(true);
     })
     .catch((err) => {
