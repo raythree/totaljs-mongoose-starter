@@ -71,13 +71,13 @@ After decoding the token the authorization component places a ```user``` object 
 
 ```
 function onAuthorize(req, res, flags, callback) {
-	verifyToken()
-	.then((userData) => {
-		// userData from token is like this
-		// {user: 'admin', group: 'administrators', role: 'superuser' }
-		req.user = user;
-		callback(true); // let framework know auth succeeded
-	});
+  verifyToken()
+  .then((userData) => {
+    // userData from token is like this
+    // {user: 'admin', group: 'administrators', role: 'superuser' }
+    req.user = user;
+    callback(true); // let framework know auth succeeded
+});
 }
 
 ```
