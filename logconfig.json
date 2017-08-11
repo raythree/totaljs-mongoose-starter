@@ -1,0 +1,10 @@
+{
+  "dateFormat": "YYYY-MM-DD HH:mm:ssZ",
+  "level": "debug",
+  "watch": true,
+  "levels": {
+    "[all]": "INFO",
+    "user-controller": "DEBUG",
+    "category2": "DEBUG"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "inventory",
+  "version": "1.0.0",
+  "description": "Total.js Mongoose Starter",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "jsonwebtoken": "^7.4.2",
+    "mongoose": "^4.11.4",
+    "mongoose-unique-validator": "^1.0.5",
+    "simple-console-logger": "^2.0.0",
+    "total.js": "^2.7.0"
+  },
+  "devDependencies": {}
+}
