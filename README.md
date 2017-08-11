@@ -59,13 +59,13 @@ Authorization: Bearer <token>
 ```
 The actual format of the token is up to you. As an example, the starter uses a token that includes a user, group, and role signed into the token in the ```sub``` and ```role``` fields like this:
 ```
-	sub: user/group
-	role: role	
+  sub: user/group
+  role: role	
 ```
 For example:
 ```
-	sub: admin/administrators
-	role: superuser
+  sub: admin/administrators
+  role: superuser
 ```
 After decoding the token the authorization component places a ```user``` object into the request so that it can be checked by other controllers and the authorization module like this:
 
@@ -77,7 +77,7 @@ function onAuthorize(req, res, flags, callback) {
     // {user: 'admin', group: 'administrators', role: 'superuser' }
     req.user = user;
     callback(true); // let framework know auth succeeded
-});
+  });
 }
 
 ```
