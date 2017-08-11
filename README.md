@@ -71,17 +71,15 @@ After decoding the token the authorization component places a ```user``` object 
 
 ```
 function onAuthorize(req, res, flags, callback) {
-	verifyToken()
-	.then((userData) => {
-		// userData from token is like this
-		// {user: 'admin', group: 'administrators', role: 'superuser' }
-		req.user = user;
-		callback(true); // let framework know auth succeeded
-	});
+  verifyToken()
+  .then((userData) => {
+  // userData from token is like this
+  // {user: 'admin', group: 'administrators', role: 'superuser' }
+  req.user = user;
+    callback(true); // let framework know auth succeeded
+  });
 }
-
 ```
-
 Here are two tokens you can use, signed with the sample key. Copy what is below the ```----[ token expires ]----``` line. The first one is for role admin which will be accepted, the second for operator which should result in 403 (the token is valid, but the authorization module is requiring admin role):
 
 ``` 
