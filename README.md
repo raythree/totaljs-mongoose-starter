@@ -1,8 +1,8 @@
 # Starter Project for REST Service with Total.js, Mongoose, and JWT authentication
 
-[Total.js](https://www.totaljs.com/) is an amazing server framework with zero dependencies that lets you write clean, intuitive code with zero boilerplate. I've not tested the performance compared to other frameworks, but according to [this benchmark](https://raygun.com/blog/node-js-performance-2017/) it looks really good.
+[Total.js](https://www.totaljs.com/) is an amazing server framework with zero dependencies that lets you write clean, intuitive code without boilerplate. I've not tested the performance compared to other frameworks, but according to [this benchmark](https://raygun.com/blog/node-js-performance-2017/) it looks really good.
 
-This is a starter app based on Total.js for REST services using Mongoose, JWT token authentication, and some common utilities for handling query filters, ordering and pagination. The goal is to have a starter app running in minutes, complete with authentication and a place to put hooks for authorization.
+This is a starter app based on Total.js for REST services using Mongoose, JWT token authentication, and some common utilities for handling query filters, ordering and pagination that work with Mongoose. The goal is to have a starter app running in minutes, complete with authentication and a place to put hooks for authorization.
 
 The starter has:
 
@@ -59,13 +59,13 @@ Authorization: Bearer <token>
 ```
 The actual format of the token is up to you. As an example, the starter uses a token that includes a user, group, and role signed into the token in the ```sub``` and ```role``` fields like this:
 ```
-	sub: user/group
-	role: role	
+  sub: user/group
+  role: role	
 ```
 For example:
 ```
-	sub: admin/administrators
-	role: superuser
+  sub: admin/administrators
+  role: superuser
 ```
 After decoding the token the authorization component places a ```user``` object into the request so that it can be checked by other controllers and the authorization module like this:
 
