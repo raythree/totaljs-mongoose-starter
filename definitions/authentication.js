@@ -10,8 +10,7 @@ const log = require('simple-console-logger').getLogger('authentication');
 let serverKey;
 
 //--------------------------------------------------------------------------
-// Check that EISS_HOME is set and read the server's secret key. 
-// Exit on failure.
+// Check environment and warn if using default
 //--------------------------------------------------------------------------
 let keyFile = process.env.SECRET_KEY
 if (!keyFile) {
