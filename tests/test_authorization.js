@@ -40,14 +40,16 @@ TEST('Test wihtout bearer', function () {
     flags = {};
   
   F.onAuthorize(req, res, flags, function (ok) {    
-    FAIL(!ok);
+    FAIL(ok);
   });
 });
 
+//TODO: generate a valid token (above) and include this test
+/*
 TEST('Test wih bearer', function () {
   let req = {
       headers: {
-        authorization: goodHeader
+        authorization: `Bearer ${token}`
       }
     }, 
     res = {}, 
@@ -57,3 +59,4 @@ TEST('Test wih bearer', function () {
     FAIL(!ok);
   });
 });
+*/

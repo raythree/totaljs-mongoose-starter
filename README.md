@@ -158,7 +158,7 @@ These are using the Frameworks TEST() methods. You can use any test framework, b
 #### Utilities
 The ```handleError``` utility catches any exceptions, prints a stack trace, and can be used to render reasonable errors back to the user.
 
-```QueryParams``` supports parameters parsing that work with Mongoose queries. I'm currently using [Admin on REST](https://marmelab.com/admin-on-rest/RestClients.html) and their ```restClient``` supports query parameters like this:
+```QueryFilter``` supports parameters parsing that work with Mongoose queries. I'm currently using [Admin on REST](https://marmelab.com/admin-on-rest/RestClients.html) and their ```restClient``` supports query parameters like this:
 ```
 GET http://my.api.url/posts?sort=['title','ASC']&range=[0, 24]&filter={title:'bar'}
 ```
@@ -167,17 +167,15 @@ See the ```listUsers``` method of the ```user``` controller for an example. It s
 ```
 function listUsers() {
   const self = this;  
+  const model = F.model('user');
 
   let total;
-  let params = new QueryParams(self.req); 
-  let cond = params.getCondition({ /* put any initial query conditions here */ });
-  // cond now has initial query, plus filters
+  let query = new QueryParams(self.req); 
 
-  return F.model('user').count(cond)
+  return query.count(model)
     .then((count) => {
       total = count;
-      let query = F.model('user').list(cond);
-      return params.exec(query);
+      return query.exec(model, 'listUsers');
     })
     .then((list) => {
       log.debug('returning list with', total, 'items');

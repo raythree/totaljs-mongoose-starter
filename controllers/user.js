@@ -1,8 +1,10 @@
 const handleError = require('../util/handleError');
 const validateId = require('../util/validateId');
-const QueryParams = require('../util/queryParams');
+const QueryFilter = require('../util/QueryFilter');
 
 const log = require('simple-console-logger').getLogger('user-controller');
+
+const model = F.model('user');
 
 /**
  * NOTE: the restful API is the same as:
@@ -29,14 +31,13 @@ function listUsers() {
   const self = this;  
 
   let total;
-  let params = new QueryParams(self.req);
+  let query = new QueryFilter(self.req);
   let cond = params.getCondition();
 
-  return F.model('user').count(cond)
+  return query.count(model)
     .then((count) => {
       total = count;
-      let query = F.model('user').list(cond);
-      return params.exec(query);
+      return query.exec(model, 'list');
     })
     .then((list) => {
       log.debug('returning list with', total, 'items');

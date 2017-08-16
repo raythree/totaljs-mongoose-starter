@@ -1,4 +1,4 @@
-const QP = require('../util/QueryParams');
+const QF = require('../util/QueryFilter');
 
 function req(q) { return {query: q}; }
 
@@ -25,56 +25,44 @@ function QueryObject() {
 }
 
 TEST('test empty query params', () => {
-  const params = new QP(req({}));
+  const params = new QF(req({}));
   OK(params.skip === 0);
   OK(params.limit === Number.MAX_SAFE_INTEGER);
   OK(Object.keys(params.filter).length === 0);
   OK(params.sort === null);
-  OK(params.ids === null);
 });
 
 TEST('test range', () => {
-  const params = new QP(req({range: "[0, 99]"}));
+  const params = new QF(req({range: "[0, 99]"}));
   OK(params.skip === 0);
   OK(params.limit === 100);
 });
 
 TEST('test invalid range', () => {
-  const params = new QP(req({range: "[99, 0]"}));
+  const params = new QF(req({range: "[99, 0]"}));
   OK(params.skip === 0);
   OK(params.limit === Number.MAX_SAFE_INTEGER);
 });
 
 TEST('test filter', () => {
-  let params = new QP(req({filter: '{"name.first":"bill", "age": 55}'}));
+  let params = new QF(req({filter: '{"name.first":"bill", "age": 55}'}));
   OK(params.filter['name.first'] === 'bill');
   OK(params.filter.age === 55);
 });
 
 TEST('test valid sorts', () => {
-  let params = new QP(req({sort: '["name", "DESC"]'}));
+  let params = new QF(req({sort: '["name", "DESC"]'}));
   OK(params.sort.key === 'name');
   OK(params.sort.dir === 'DESC');
   
-  params = new QP(req({sort: '["age", "ASC"]'}));
+  params = new QF(req({sort: '["age", "ASC"]'}));
   OK(params.sort.key === 'age');
   OK(params.sort.dir === 'ASC');
 });
 
 TEST('test invalid sort', () => {
-  let params = new QP(req({sort: 'name", DESC"]'}));
+  let params = new QF(req({sort: 'name", DESC"]'}));
   OK(params.sort === null);
-});
-
-TEST('test invalid IDS', () => {
-  let params = new QP(req({ids: 'bad'}));
-  OK(params.ids === null);
-});
-
-TEST('test valid IDS', () => {
-  let params = new QP(req({ids: '["one","two","three"]'}));
-  OK(params.ids.length === 3);
-  OK(params.ids[0] === 'one');
 });
 
 TEST('condition, sort, filter, paginate', () => {
@@ -83,40 +71,50 @@ TEST('condition, sort, filter, paginate', () => {
     range: '[0,99]',
     sort: '["name","ASC"]'    
   };
-  const params = new QP(req(qobj));
+  const qf = new QF(req(qobj));
   
   // creates new cond
-  let cond = params.getCondition();
-  OK(cond.a.$regex === 'aval');
-  OK(cond.b.$regex === 'bval');
-
-  // uses existing
-  cond = params.getCondition({existing: 13});
-  OK(cond.existing === 13)
-  OK(cond.a.$regex === 'aval');
-  OK(cond.b.$regex === 'bval');
-
-  let query = new QueryObject();
-  params.updateQuery(query);
-  OK(query.sortKey === 'name');
-  OK(query.sortDir === 1);
-  OK(query.skipVal === 0);
-  OK(query.limitVal === 100);
+  let cond = qf.filterQuery();
+  OK(cond.$and.length === 3);
+  OK(cond.$and[0].a.$regex === 'aval');
+  OK(cond.$and[1].b.$regex === 'bval');
+  OK(cond.$and[2].c  === 3);
+  
+  // test with initial condition
+  cond = qf.filterQuery({existing: 13});
+  OK(cond.$and.length === 4);
+  OK(cond.$and[0].existing === 13);
+  OK(cond.$and[1].a.$regex === 'aval');
+  OK(cond.$and[2].b.$regex === 'bval');
+  OK(cond.$and[3].c  === 3);
 });
 
 
-TEST('default query', () => {
+TEST('default pagination', () => {
   const qobj = {};
-  const params = new QP(req(qobj));
+  const qf = new QF(req(qobj));
   
   let query = new QueryObject();
-  params.updateQuery(query);
+  query = qf.sortAndPaginate(query);
   OK(query.sortKey === null);
   OK(query.sortDir === 0);
   OK(query.skipVal === 0);
   OK(query.limitVal === Number.MAX_SAFE_INTEGER);
 });
 
+TEST('specified pagination', () => {
+  const qobj = {
+    range: '[100, 199]',
+    sort: '["name","ASC"]'    
+  };
+  const qf = new QF(req(qobj));
+  let query = new QueryObject();
+  query = qf.sortAndPaginate(query);
+  OK(query.sortKey === 'name');
+  OK(query.sortDir === 1);
+  OK(query.skipVal === 100);
+  OK(query.limitVal === 100);
+});
 
 
 
