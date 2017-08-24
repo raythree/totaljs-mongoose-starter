@@ -37,7 +37,7 @@ The starter looks for two environemnt variables when it starts. If not found, th
 
 ```
 export MONGO_URL=mongodb://localhost/testdb
-export SECRET_KEY=/path/to/keyfile
+export SECRET_KEY=./secretkey.txt
 ```
 
 Get the starter and run the server:
